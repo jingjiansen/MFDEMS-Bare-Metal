@@ -6,8 +6,7 @@
 
 ## 结果展示
 
-<video controls>
-  <source src="https://raw.githubusercontent.com/jingjiansen/MFDEMS-Bare-Metal/main/assets/b15838eeb2eec38c5643703b3b718fe2-20251212123308-jcfnx3y.mp4" type="video/mp4">
+<video controls="controls" src="assets/b15838eeb2eec38c5643703b3b718fe2-20251212123308-jcfnx3y.mp4"></video>
   
 ## 程序功能
 
