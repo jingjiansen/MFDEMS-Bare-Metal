@@ -164,9 +164,9 @@ void KEY1_EXTI_IRQHANDLER(void)
 {
     if(EXTI_GetFlagStatus(KEY1_EXTI_LINE) == SET)
     {
-        left_shift_flag = 1;
-        menu_show_flag = 1;
-        EXTI_ClearITPendingBit(KEY1_EXTI_LINE);
+        left_shift_flag = 1; /* 标记左移 */
+        menu_show_flag = 1;  /* 标记显示菜单 */
+        EXTI_ClearITPendingBit(KEY1_EXTI_LINE); /* 清除中断标志位 */
     }
 }
 
