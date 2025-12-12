@@ -291,7 +291,6 @@ void OLED_Init(void)
 void OLED_CLS(void)//清屏
 {
 	OLED_Fill(0x00);
-//    OLED_Fill(0xff);
 }
 
 

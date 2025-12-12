@@ -42,15 +42,15 @@ uint32_t wooden_fish_num = 0;
  */
 void Boot_Task(void)
 {
-    OLED_CLS();
     OLED_DrawBitMap((128-113)/2, 0, 113, 64, (uint8_t*)dog4);
     DWT_DelayMs(200);
     OLED_DrawBitMap((128-113)/2, 0, 113, 64, (uint8_t*)dog3);
     DWT_DelayMs(300);
     OLED_DrawBitMap((128-113)/2, 0, 113, 64, (uint8_t*)dog1);
-    DWT_DelayMs(400);
- //    OLED_DrawBitMap((128-113)/2, 0, 113, 64, (uint8_t*)dog4);
-//    DWT_DelayMs(1000);
+    DWT_DelayMs(500);
+
+    //    OLED_DrawBitMap((128-113)/2, 0, 113, 64, (uint8_t*)dog4);
+    //    DWT_DelayMs(1000);
     // /* 显示野火电子--上下左右居中 */
     // OLED_ShowChinese_F16X16(1,(8-4)/2+0,0);
     // OLED_ShowChinese_F16X16(1,(8-4)/2+1,1);
@@ -99,7 +99,6 @@ void Menu_Task(void)
         else
         {
             OLED_CLS(); 
-            OLED_DrawBitMap((128-113)/2, 0, 113, 64, (uint8_t*)dog4);
             DWT_DelayMs(200);
     
             menu_show_flag = 1;
