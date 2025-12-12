@@ -1,3 +1,5 @@
+# 项目1：裸机版多功能桌面环境监测系统
+
 # MFDEMS-Bare-Metal
 
 这是裸机版多功能桌面环境监测系统的实现，旨在实践学习到的嵌入式知识。
@@ -33,13 +35,13 @@ https://github.com/user-attachments/assets/01c243bb-c6ad-4281-b750-c4530ed327f5
 
 GPIO即通用输入输出，其具有多个端口GPIOA、GPIOB、GPIOC等，每个端口具有多个引脚。GPIO引脚有多种工作模式，这种工作模式因连接的外设和要求的初始状态不同而有所差异。
 
-| 外设 | GPIO端口 | 引脚 |        工作模式        | 时钟 |
-| :-----: | :--------: | :----: | :----------------------: | :----: |
-| LED灯 |    B    |  13  |            `GPIO_Mode_Out_PP`            |   `RCC_APB2Periph_GPIOB`   |
-| KEY1 |    A    |  0  |            `GPIO_Mode_IN_FLOATING`            |   `RCC_APB2Periph_GPIOA`   |
-| KEY2 |    C    |  13  |            `GPIO_Mode_IN_FLOATING`            |   `RCC_APB2Periph_GPIOC`   |
-| KEY3 |    B    |  15  |            `GPIO_Mode_IPD`            |   `RCC_APB2Periph_GPIOB`   |
-| DHT11 |    B    |  12  | 初始为`GPIO_Mode_IPD`，运行过程中配置 |   `RCC_APB2Periph_GPIOB`   |
+|外设|GPIO端口|引脚|工作模式|时钟|
+| :-----: | :--------: | :----: | :------------------------: | :----: |
+|LED灯|B|13|​`GPIO_Mode_Out_PP`|​`RCC_APB2Periph_GPIOB`|
+|KEY1|A|0|​`GPIO_Mode_IN_FLOATING`|​`RCC_APB2Periph_GPIOA`|
+|KEY2|C|13|​`GPIO_Mode_IN_FLOATING`|​`RCC_APB2Periph_GPIOC`|
+|KEY3|B|15|​`GPIO_Mode_IPD`|​`RCC_APB2Periph_GPIOB`|
+|DHT11|B|12|初始为`GPIO_Mode_IPD`，运行过程中配置|​`RCC_APB2Periph_GPIOB`|
 
 ```C
 typedef enum
@@ -98,7 +100,7 @@ GPIO_Init(LED4_GPIO_PORT,&gpio_initstruct);
 
 此外还有一些对于灯状态的操作，如控制灯开、灯灭、翻转灯的状态。
 
-低电平触发下，使用`GPIO_ResetBits(GPIOx,GPIO_Pin)`来点灯（即置GPIO引脚高电平），使用`GPIO_SetBits(GPIOx,GPIO_Pin)`来关灯（即置GPIO引脚低电平）。而在翻转灯状态时直接操作了控制GPIO引脚的输出电平寄存器`ODR`，通过异或操作实现翻转。ODR寄存器中的每一位对应一个GPIO引脚，通过`GPIO_Pin`掩码（对应引脚位置1）来保证只影响相关引脚，通过异或来翻转对应引脚状态。
+低电平触发下，使用`GPIO_ResetBits(GPIOx,GPIO_Pin)`​来点灯（即置GPIO引脚高电平），使用`GPIO_SetBits(GPIOx,GPIO_Pin)`​来关灯（即置GPIO引脚低电平）。而在翻转灯状态时直接操作了控制GPIO引脚的输出电平寄存器`ODR`​，通过异或操作实现翻转。ODR寄存器中的每一位对应一个GPIO引脚，通过`GPIO_Pin`掩码（对应引脚位置1）来保证只影响相关引脚，通过异或来翻转对应引脚状态。
 
 ```C
 void LED_TOGGLE(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
@@ -121,7 +123,7 @@ KEY1使用GPIOA端口Pin0引脚；KEY2使用GPIOC端口引脚13。两者均使�
 4. 接着将相关引脚挂到外部中断线上；
 5. 配置EXTI：配置相关外部中断线，将其设置为中断模式、下降沿触发并使能。此时硬件电路已经就绪，当按键引脚出现下降沿时，相关外部中断线EXTI将挂起中断标志位；
 6. 配置NVIC，将相关的外部中断的抢占优先级、子优先级写入NVIC，并使能该通道。此时外部中断线一旦挂起标志位，NVIC就会去向量表里找函数入口；
-7. 实现中断服务函数。首先通过宏定义`#define KEY1_EXTI_IRQHANDLER EXTI0_IRQHandler`为真正的中断向量入口起了一个别名。启动文件中已经将中断处理函数`EXTI0_IRQHandler和EXTI0_IRQHandler`硬编码进了向量表，在C文件中实现同名函数，这里为方便记忆为`KEY1_EXTI_IRQHANDLER`，链接器在最终链接阶段自动将其地址填到向量表对应的位置中去。
+7. 实现中断服务函数。首先通过宏定义`#define KEY1_EXTI_IRQHANDLER EXTI0_IRQHandler`​为真正的中断向量入口起了一个别名。启动文件中已经将中断处理函数`EXTI0_IRQHandler和EXTI0_IRQHandler`​硬编码进了向量表，在C文件中实现同名函数，这里为方便记忆为`KEY1_EXTI_IRQHANDLER`，链接器在最终链接阶段自动将其地址填到向量表对应的位置中去。
 
 EXTI外部中断线与引脚编号一一对应，即同一端口的不同引脚不能共享一条EXTI线，而不同端口的同一引脚可共享一条EXTI线。在中断函数中通过读取引脚来区分。
 
@@ -243,8 +245,11 @@ void KEY1_EXTI_IRQHANDLER(void)
 }
 ```
 
+‍
 
+‍
 
+‍
 
 #### 温湿度传感器DHT11
 
@@ -256,12 +261,12 @@ DHT11为温湿度传感器，供4个引脚，是单线双向通信机制，即�
 
 通信时序为：建立连接、数据接收两部分。
 
-| 引脚 |     作用     |     备注     |
-| :----: | :------------: | :-------------: |
-| VDD |     电源     |              |
-| DATA | 输出串行总线 | 连接到GPIOB12 |
-|  NC  |     空脚     |              |
-| GND |     接地     |              |
+|引脚|作用|备注|
+| :-----------------: | :-------------------: | :---------------: |
+|VDD|电源||
+|DATA|输出串行总线|连接到GPIOB12|
+|NC|空脚||
+|GND|接地||
 
 ##### 建立连接
 
@@ -316,7 +321,7 @@ ErrorStatus DHT11_ReadData(DHT11_DATA_TYPEDEF *dht11_data);
 
 ##### 函数实现
 
-这里仅对主要的字节读取函数`DHT11_ReadByte()`和帧读取函数`DHT11_ReadData()`进行说明。
+这里仅对主要的字节读取函数`DHT11_ReadByte()`​和帧读取函数`DHT11_ReadData()`进行说明。
 
 ###### 帧读取`DHT11_ReadData()`
 
@@ -435,4 +440,49 @@ uint8_t DHT11_ReadByte(void)
 }
 ```
 
+#### OLED
+
+##### 模块简介
+
+0.96寸IIC OLED模块，屏幕分辨率为128 * 64像素，黄蓝双色显示，驱动芯片为SSD1306，使用IIC接口，用于显示字符、图片等信息。
+
+显存大小：GDDRAM = 128 * 64 bit SRAM；工作电压：3.3V。
+
+该模块共4根引脚，分别为VCC、GND、SCL、SDA。其中SCL和SDA分别为IIC通信中的时钟总线和数据总线。
+
+##### 显示逻辑
+
+该模块每次最小显示单位为1个字节，即8位，为1页（PAGE），且竖向排列。如下图中标出的bit0-bit7。也就是说在列上没有写入限制，即可单独设置一列，但在行上有限制，即最小设置为8行，即一个PAGE。因此，128*64的显示区域分为8个PAGE，每个PAGE128列。
+
+此外该模块共有3种写方式：
+
+1. 页寻址模式：写完当前列的8位之后，列地址自动加一，但不会自动换页；
+2. 水平寻址模式：可自动换页，如PAGE0的第128列写完之后地址指针自动移到PAGE1的第1列（COL0）；
+3. 垂直寻址模式：写完一列之后换下一列，如PAGE7的第1列写完之后地址指针移动到PAGE0的第2列。
+
+OLED在串行模式（数据在单数据线上逐位发送）下只能写入数据和命令，无法读取数据。
+
+![image](assets/image-20251212220351-ou4f4ie.png)
+
+##### 通信时序
+
+该模块采用IIC通信，关于IIC的具体实现，请到相关章节阅读。
+
+1. 主机发送起始信号（S）；
+2. 从机确认7位从机地址和1位读写选择（0表示写模式，1表示读模式）；
+3. 从机应答信号（ACK）；
+4. 主机发送控制字节：字节中的位7表示模式选择，置1表示后续的每个数据字节前都有一个控制字节，置0表示只有一次控制字节，后续都是数据字节；位6表示数据指令选择，置1表示写入的是数据，置0表示写入的是指令；位5-位0无实际意义，通常置0。
+5. 从机应答信号（ACK）；
+6. 主机发送数据或指令；
+7. 从机应答信号（ACK）；
+8. 主机发送终止信号（P）。
+
+#### IIC实现
+
+##### 软仿实现
+
+##### 硬件实现
+
 ### 应用层部分
+
+‍
