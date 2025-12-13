@@ -37,6 +37,7 @@
 ".\objects\bsp_fonts.o"
 ".\objects\bsp_i2c_oled.o"
 ".\objects\bsp_dht11.o"
+".\objects\bsp_softi2c.o"
 ".\objects\app_oled.o"
 ".\objects\app_dht11.o"
 --library_type=microlib --strict --scatter ".\Objects\Fire_F103.sct"

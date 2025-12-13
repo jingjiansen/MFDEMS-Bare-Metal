@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Fire_F103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Fire_F103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Dec 12 21:45:08 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Sat Dec 13 20:03:43 2025
 <BR><P>
 <H3>Maximum Stack Usage =       1264 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -812,49 +812,49 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WriteBuffer
 </UL>
-<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese_Optimized
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar_Optimized
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Fill
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_DrawBitMap
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_Task
 </UL>
 
-<P><STRONG><a name="[88]"></a>OLED_ShowChar</STRONG> (Thumb, 154 bytes, Stack size 32 bytes, bsp_i2c_oled.o(i.OLED_ShowChar))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = OLED_ShowChar &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
+<P><STRONG><a name="[88]"></a>OLED_ShowChar_Optimized</STRONG> (Thumb, 106 bytes, Stack size 24 bytes, bsp_i2c_oled.o(i.OLED_ShowChar_Optimized))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = OLED_ShowChar_Optimized &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WriteByte
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WriteBuffer
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_SetPos
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
 </UL>
 
-<P><STRONG><a name="[89]"></a>OLED_ShowChinese</STRONG> (Thumb, 96 bytes, Stack size 32 bytes, bsp_i2c_oled.o(i.OLED_ShowChinese))
-<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = OLED_ShowChinese &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
+<P><STRONG><a name="[7e]"></a>OLED_ShowChinese_F16X16</STRONG> (Thumb, 38 bytes, Stack size 24 bytes, bsp_i2c_oled.o(i.OLED_ShowChinese_F16X16))
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = OLED_ShowChinese_F16X16 &rArr; OLED_ShowChinese_Optimized &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WriteByte
+<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese_Optimized
+</UL>
+<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_Task
+</UL>
+
+<P><STRONG><a name="[89]"></a>OLED_ShowChinese_Optimized</STRONG> (Thumb, 60 bytes, Stack size 24 bytes, bsp_i2c_oled.o(i.OLED_ShowChinese_Optimized))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = OLED_ShowChinese_Optimized &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
+</UL>
+<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WriteBuffer
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_SetPos
 </UL>
 <BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese_F16X16
 </UL>
 
-<P><STRONG><a name="[7e]"></a>OLED_ShowChinese_F16X16</STRONG> (Thumb, 38 bytes, Stack size 24 bytes, bsp_i2c_oled.o(i.OLED_ShowChinese_F16X16))
-<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = OLED_ShowChinese_F16X16 &rArr; OLED_ShowChinese &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
-</UL>
-<BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese
-</UL>
-<BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_Task
-</UL>
-
 <P><STRONG><a name="[8a]"></a>OLED_ShowString</STRONG> (Thumb, 48 bytes, Stack size 24 bytes, bsp_i2c_oled.o(i.OLED_ShowString))
-<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = OLED_ShowString &rArr; OLED_ShowChar &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = OLED_ShowString &rArr; OLED_ShowChar_Optimized &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
 </UL>
-<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar
+<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar_Optimized
 </UL>
 <BR>[Called By]<UL><LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString_F8X16
 </UL>
 
 <P><STRONG><a name="[83]"></a>OLED_ShowString_F8X16</STRONG> (Thumb, 40 bytes, Stack size 24 bytes, bsp_i2c_oled.o(i.OLED_ShowString_F8X16))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = OLED_ShowString_F8X16 &rArr; OLED_ShowString &rArr; OLED_ShowChar &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
+<BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = OLED_ShowString_F8X16 &rArr; OLED_ShowString &rArr; OLED_ShowChar_Optimized &rArr; OLED_SetPos &rArr; OLED_WriteBuffer &rArr; IIC_AddressMatching &rArr; I2C_CheckEvent
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowString
 </UL>
@@ -870,7 +870,9 @@ Global Symbols
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IIC_SendData
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IIC_AddressMatching
 </UL>
-<BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_SetPos
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese_Optimized
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar_Optimized
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_SetPos
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Fill
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Menu_Task
 </UL>
@@ -884,9 +886,7 @@ Global Symbols
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IIC_SendData
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IIC_AddressMatching
 </UL>
-<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChinese
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_ShowChar
-<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_DrawBitMap
+<BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_DrawBitMap
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Init
 </UL>
 

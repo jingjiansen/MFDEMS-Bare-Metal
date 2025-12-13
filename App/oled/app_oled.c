@@ -1,21 +1,3 @@
-/**
-  ******************************************************************************
-  * @file       app_oled.c
-  * @author     embedfire
-  * @version     V1.0
-  * @date        2024
-  * @brief   桌面小摆件应用层功能接口
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台  ：野火 STM32F103C8T6-STM32开发板 
-  * 论坛      ：http://www.firebbs.cn
-  * 官网      ：https://embedfire.com/
-  * 淘宝      ：https://yehuosm.tmall.com/
-  *
-  ******************************************************************************
-  */
-  
 #include "oled/app_oled.h" 
 #include "oled/bsp_i2c_oled.h"
 #include "fonts/bsp_fonts.h"

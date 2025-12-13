@@ -20,8 +20,8 @@
     #define DEBUG_APBXCLKCMD   			        RCC_APB2PeriphClockCmd	        /* 对应串口外设时钟 */
     #define DEBUG_BAUDRATE   			        115200                          /* 波特率 */
      
-    #define DEBUG_IRQ                           USART1_IRQn                      /* 对应串口中断号 */
-    #define DEBUG_IRQHANDLER                    USART1_IRQHandler                /* 对应串口中断处理函数 */
+    #define DEBUG_IRQ                           USART1_IRQn                     /* 对应串口中断号 */
+    #define DEBUG_IRQHANDLER                    USART1_IRQHandler               /* 对应串口中断处理函数 */
      
 #endif
 
