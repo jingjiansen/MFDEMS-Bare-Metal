@@ -534,11 +534,6 @@
               <FilePath>..\User\main.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\delay\bsp_delay.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_systick.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\systick\bsp_systick.c</FilePath>
@@ -607,16 +602,6 @@
               <FileName>app_dht11.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\dht11\app_dht11.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>DOC</GroupName>
-          <Files>
-            <File>
-              <FileName>readme.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Doc\readme.txt</FilePath>
             </File>
           </Files>
         </Group>

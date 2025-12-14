@@ -29,5 +29,5 @@
 .\objects\bsp_gpio_key.o: ..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h
 .\objects\bsp_gpio_key.o: ..\Libraries\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\bsp_gpio_key.o: ..\Libraries\STM32F10x_StdPeriph_Driver\inc\misc.h
-.\objects\bsp_gpio_key.o: ..\User\delay/bsp_delay.h
 .\objects\bsp_gpio_key.o: ..\User\systick/bsp_systick.h
+.\objects\bsp_gpio_key.o: ..\User\dwt/bsp_dwt.h

@@ -26,7 +26,6 @@
 ".\objects\stm32f10x_wwdg.o"
 ".\objects\stm32f10x_it.o"
 ".\objects\main.o"
-".\objects\bsp_delay.o"
 ".\objects\bsp_systick.o"
 ".\objects\bsp_dwt.o"
 ".\objects\usart_com.o"

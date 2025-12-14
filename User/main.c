@@ -14,15 +14,15 @@ int main(void)
 {
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 
+    SysTick_Init();
+    DWT_Init();
+
     KEY_Init();
     LED_GPIO_Config();
     IIC_Init();
     DEBUG_USART_Init();
     DHT11_GPIO_Config();
-    
-    SysTick_Init();
-    DWT_Init();
-    
+        
     OLED_Init();
     OLED_CLS();
     Dht11_TaskInit(500);

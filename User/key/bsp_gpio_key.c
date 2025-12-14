@@ -1,7 +1,6 @@
 #include "key/bsp_gpio_key.h"
-#include "delay/bsp_delay.h"
 #include "systick/bsp_systick.h"
-
+#include "dwt/bsp_dwt.h"
 
 KEY_Info key1_info  = {KEY1_GPIO_PORT,KEY1_GPIO_PIN,KEY_GENERAL_TRIGGER,KEY_INIT,0,0,EVENT_ATTONITY,KEY_NONE_CLICK};
 KEY_Info key2_info  = {KEY2_GPIO_PORT,KEY2_GPIO_PIN,KEY_GENERAL_TRIGGER,KEY_INIT,0,0,EVENT_ATTONITY,KEY_NONE_CLICK};
@@ -111,9 +110,9 @@ KEY_Status KEY_Scan(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, KEY_TriggerLevel key
 {
     if(GPIO_ReadInputDataBit(GPIOx,GPIO_Pin) == key_pressstatus)
     {
-        Rough_Delay_Ms(20);
+        DWT_DelayMs(20);
         while(GPIO_ReadInputDataBit(GPIOx,GPIO_Pin) == key_pressstatus);
-        Rough_Delay_Ms(20);
+        DWT_DelayMs(20);
         return KEY_DOWN;
     }
     else
