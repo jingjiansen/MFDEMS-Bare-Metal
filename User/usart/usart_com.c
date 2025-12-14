@@ -44,6 +44,7 @@ void USARTX_SendString(USART_TypeDef *pusartx, char *str)
     } while (*(str + k) != '\0');
 }
 
+
 /**
  * @brief 将一个字符写入到文件中,重定向c库函数printf到串口，重定向后可使用printf函数
  * @param ch: 要写入的字符

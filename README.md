@@ -2,7 +2,7 @@
 
 # MFDEMS-Bare-Metal
 
-这是裸机版多功能桌面环境监测系统的实现，旨在实践学习到的嵌入式知识。
+这是裸机版多功能桌面环境监测系统的实现，旨在实践学习到的嵌入式知识。本项目是学习野火《7天入门STM32项目》的学习成果[视频源址](https://www.bilibili.com/video/BV1C4421Z7t8/?p=12&amp;share_source=copy_web&amp;vd_source=a076aeed245b265b10dbbccc281e7d1d)。文中图片和项目部分资料均来源于该视频。
 
 ## 结果展示
 
@@ -15,7 +15,7 @@ https://github.com/user-attachments/assets/01c243bb-c6ad-4281-b750-c4530ed327f5
 1. 开机连续显示3张小猫图像--上下左右居中--总共持续1s；
 2. 第一步过后显示主页；
 3. 可通过板载按键key1、key2左右切换一级菜单。分别是主页、音乐、温湿度、灯具控制、木鱼；
-4. 可通过扩展按键key进入、退回一级菜单。分别是主页、音乐、温湿度、灯具控制、木鱼。
+4. 可通过扩展按键key3进入、退回一级菜单。分别是主页、音乐、温湿度、灯具控制、木鱼。
 
 ### 二级功能
 
@@ -33,14 +33,14 @@ https://github.com/user-attachments/assets/01c243bb-c6ad-4281-b750-c4530ed327f5
 
 本项目使用到GPIO的外接硬件部分有：外接LED灯、板载按键1、板载按键2、板载按键3、LED屏幕、DHT11温湿度传感器。
 
-GPIO即通用输入输出，其具有多个端口GPIOA、GPIOB、GPIOC等，每个端口具有多个引脚。GPIO引脚有多种工作模式，这种工作模式因连接的外设和要求的初始状态不同而有所差异。
+GPIO即通用输入输出，STM32F103C8T6具有多个端口：GPIOA、GPIOB、GPIOC等，每个端口具有多个引脚，PIN0-PIN15。GPIO引脚有多种工作模式，这种工作模式因连接的外设和要求的初始状态不同而有所差异。以下是本项目使用到的引脚及其配置。
 
 |外设|GPIO端口|引脚|工作模式|时钟|
 | :--------: | :--------: | :----: | :------------------------: | :----: |
 |LED灯|B|13|​`GPIO_Mode_Out_PP`（复用推挽输出）|​`RCC_APB2Periph_GPIOB`|
 |KEY1|A|0|​`GPIO_Mode_IN_FLOATING`（浮空输入）|​`RCC_APB2Periph_GPIOA`|
 |KEY2|C|13|​`GPIO_Mode_IN_FLOATING`（浮空输入）|​`RCC_APB2Periph_GPIOC`|
-|KEY3|B|15|​`GPIO_Mode_IPD`（下拉输入）|​`RCC_APB2Periph_GPIOB`|
+|KEY3|B|5|​`GPIO_Mode_IPD`（下拉输入）|​`RCC_APB2Periph_GPIOB`|
 |DHT11|B|12|初始为`GPIO_Mode_IPD`，运行过程中配置|​`RCC_APB2Periph_GPIOB`|
 |IIC_SCL|B|6|||
 |IIC_SDA|B|7|||
@@ -48,6 +48,7 @@ GPIO即通用输入输出，其具有多个端口GPIOA、GPIOB、GPIOC等，每�
 |USART_RX|A|10|​`GPIO_Mode_IPU`（上拉输入）||
 
 ```C
+/* 引脚工作模式 */
 typedef enum
 { 
   /* 模拟输入（ADC采集） */
@@ -67,14 +68,13 @@ typedef enum
   /* 复用推挽输出：同推挽输出，但由硬件外设控制 */
   GPIO_Mode_AF_PP = 0x18
 }GPIOMode_TypeDef;
-
 ```
 
 #### LED灯
 
 ##### 宏定义
 
-LED4为外接LED灯，其使用GPIOB端口的PIN13引脚。
+LED4为外接LED灯，其使用GPIOB端口的PIN5引脚。
 
 ```C
 // LED4灯相关宏定义
@@ -85,7 +85,7 @@ LED4为外接LED灯，其使用GPIOB端口的PIN13引脚。
 
 ##### 初始化及灯状态操作
 
-LED灯为低电平触发，即端口输出低电平LED灯点亮，输出高电平灯灭。因此在引脚初始化时将其初始状态置为高电平状态。并且设置该GPIO引脚的工作模式为推挽输出`GPIO_Mode_Out_PP`。推挽输出能够同时提供强力的高电平和低电平，是一种驱动方式，与此常见的其他GPIO方式还有开漏输出（只有内部下拉，上拉需外部）等。
+LED灯为低电平触发，即引脚输出低电平LED灯点亮，输出高电平灯灭。因此在引脚初始化时将初始状态置为高电平。并且设置引脚的工作模式为推挽输出`GPIO_Mode_Out_PP`。推挽输出能够同时提供强力的高电平和低电平，是一种驱动方式，与此常见的其他GPIO方式还有开漏输出（只有内部下拉，上拉需外部）等。
 
 ```C
 // LED4GPIO引脚初始化
@@ -104,7 +104,7 @@ GPIO_Init(LED4_GPIO_PORT,&gpio_initstruct);
 
 此外还有一些对于灯状态的操作，如控制灯开、灯灭、翻转灯的状态。
 
-低电平触发下，使用`GPIO_ResetBits(GPIOx,GPIO_Pin)`​来点灯（即置GPIO引脚高电平），使用`GPIO_SetBits(GPIOx,GPIO_Pin)`​来关灯（即置GPIO引脚低电平）。而在翻转灯状态时直接操作了控制GPIO引脚的输出电平寄存器`ODR`​，通过异或操作实现翻转。ODR寄存器中的每一位对应一个GPIO引脚，通过`GPIO_Pin`掩码（对应引脚位置1）来保证只影响相关引脚，通过异或来翻转对应引脚状态。
+低电平触发下，使用`GPIO_ResetBits(GPIOx,GPIO_Pin)`​来点灯（即置引脚高电平），使用`GPIO_SetBits(GPIOx,GPIO_Pin)`​来关灯（即置引脚低电平）。而翻转灯状态时直接操作了控制GPIO引脚的输出电平寄存器`ODR`​，通过异或操作实现翻转。ODR寄存器中的每一位对应一个GPIO引脚，通过`GPIO_Pin`掩码（对应引脚位置1）来保证只影响相关引脚，通过异或来翻转对应引脚状态。
 
 ```C
 void LED_TOGGLE(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
@@ -117,19 +117,19 @@ void LED_TOGGLE(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
 ##### 宏定义与中断说明
 
-KEY1使用GPIOA端口Pin0引脚；KEY2使用GPIOC端口引脚13。两者均使用按键中断进行状态检查、KEY3使用GPIOB端口Pin15引脚，非中断，在任务轮询中直接检查相关GPIO引脚状态来判断。
+KEY1使用GPIOA端口PIN0引脚；KEY2使用GPIOC端口PIN13引脚。两者均使用按键中断进行状态检查。KEY3使用GPIOB端口PIN15引脚，非中断，在任务轮询中直接检查引脚状态来判断。
 
 ###### 关于按键中断
 
 1. 按键一端与相关引脚相连，另一端接地（低电平有效）。没按下时相关引脚被内部上拉到高电平，按下瞬间引脚被拉低，出现一个下降沿；
 2. 开启GPIO时钟之后将给GPIO相关模块供电，后续配置才会有效。配置引脚工作模式为浮空输入，即纯粹做输入；
-3. 接着开启AFIO时钟，给引脚到EXTI（外部中断线）供电，后续配置AFIO寄存器才会有效；
-4. 接着将相关引脚挂到外部中断线上；
+3. 开启AFIO时钟，给引脚到EXTI（外部中断线）供电，后续配置AFIO寄存器才会有效；
+4. 将相关引脚挂到外部中断线上；
 5. 配置EXTI：配置相关外部中断线，将其设置为中断模式、下降沿触发并使能。此时硬件电路已经就绪，当按键引脚出现下降沿时，相关外部中断线EXTI将挂起中断标志位；
-6. 配置NVIC，将相关的外部中断的抢占优先级、子优先级写入NVIC，并使能该通道。此时外部中断线一旦挂起标志位，NVIC就会去向量表里找函数入口；
-7. 实现中断服务函数。首先通过宏定义`#define KEY1_EXTI_IRQHANDLER EXTI0_IRQHandler`​为真正的中断向量入口起了一个别名。启动文件中已经将中断处理函数`EXTI0_IRQHandler和EXTI0_IRQHandler`​硬编码进了向量表，在C文件中实现同名函数，这里为方便记忆为`KEY1_EXTI_IRQHANDLER`，链接器在最终链接阶段自动将其地址填到向量表对应的位置中去。
+6. 配置NVIC，将相关的外部中断的抢占优先级、子优先级写入NVIC，并使能该通道。此时外部中断线一旦挂起标志位，NVIC就会去向量表里找入口函数；
+7. 实现中断服务函数。首先通过宏定义`#define KEY1_EXTI_IRQHANDLER EXTI0_IRQHandler`​为真正的中断向量入口起了一个别名。启动文件中已经将中断处理函数`EXTI0_IRQHandler和EXTI0_IRQHandler`​硬编码进了向量表，在C文件中实现同名函数即可，这里为方便记忆使用`KEY1_EXTI_IRQHANDLER`，链接器在最终链接阶段自动将其地址填到向量表对应的位置中去。
 
-EXTI外部中断线与引脚编号一一对应，即同一端口的不同引脚不能共享一条EXTI线，而不同端口的同一引脚可共享一条EXTI线。在中断函数中通过读取引脚来区分。
+EXTI外部中断线与引脚编号一一对应，即同一端口的不同引脚不能共享一条EXTI线，而不同端口的同一引脚可共享一条EXTI线，可在中断函数中通过读取引脚来区分。
 
 ```C
 //KEY1
@@ -249,15 +249,9 @@ void KEY1_EXTI_IRQHANDLER(void)
 }
 ```
 
-‍
-
-‍
-
-‍
-
 #### 温湿度传感器DHT11
 
-DHT11为温湿度传感器，供4个引脚，是单线双向通信机制，即只使用一根数据线进行数据交换和控制。
+DHT11为温湿度传感器，共4个引脚，是单线双向通信机制，即只使用一根数据线进行数据交换和控制。
 
 数据格式为：8bit湿度整数数据+8bit湿度小数数据+8bit温度整数数据+8bit温度小数数据+8bit校验和数据。其中，湿度小数部分为0；当温度低于0℃时，温度数据的低8位的最高位为1。
 
@@ -301,22 +295,22 @@ DHT11为温湿度传感器，供4个引脚，是单线双向通信机制，即�
 
 ##### 数据结构与函数声明
 
-由于在进行数据传输时PB12需要既作为输入（接收来自DHT11的数据）、又作为输出（主机需主动拉低数据线以发送起始信号），因此需要实时改变引脚工作模式，使用函数`DHT11_DataPinModeConfig()`来进行模式切换。
+- 由于在进行数据传输时PB12需要既作为输入（接收来自DHT11的数据）、又作为输出（主机需主动拉低数据线以发送起始信号），因此需要实时改变引脚工作模式，使用函数`DHT11_DataPinModeConfig()`来进行模式切换。
 
-函数`DHT11_ReadByte()`则负责读取1字节数据；
+- 函数`DHT11_ReadByte()`则负责读取1字节数据；
 
-函数`DHT11_ReadData()`负责读取一帧数据，即完整的温湿度数据，并将其存储在指定缓冲区中。
+- 函数`DHT11_ReadData()`负责读取一帧数据，即完整的温湿度数据，并将其存储在指定缓冲区中。
 
 ```C
 typedef struct
 {                            
-   uint8_t humi_int;        //湿度的整数部分
-   uint8_t humi_deci;       //湿度的小数部分
-   uint8_t temp_int;        //温度的整数部分
-   uint8_t temp_deci;       //温度的小数部分
-   uint8_t check_sum;       //校验和                              
-}DHT11_DATA_TYPEDEF;                               
-                        
+   uint8_t humi_int;        // 湿度的整数部分
+   uint8_t humi_deci;       // 湿度的小数部分
+   uint8_t temp_int;        // 温度的整数部分
+   uint8_t temp_deci;       // 温度的小数部分
+   uint8_t check_sum;       // 校验和                              
+}DHT11_DATA_TYPEDEF;
+                   
 void DHT11_GPIO_Config(void);
 void DHT11_DataPinModeConfig(GPIOMode_TypeDef mode);
 uint8_t DHT11_ReadByte(void);
@@ -349,8 +343,7 @@ ErrorStatus DHT11_ReadData(DHT11_DATA_TYPEDEF *dht11_data)
     DHT11_DATA_OUT(1); /* 释放数据总线（SDA）*/
     DHT11_DataPinModeConfig(GPIO_Mode_IPU); /* 配置为上拉输入模式，由外部上拉电阻拉高电平 */
     DWT_DelayUs(20);//等待上拉生效且回应,主机发送开始信号结束后,延时等待20-40us后
-    
-    
+
     /* 步骤2：从机接收到起始信号后，先拉低数据线83us以上，然后拉高数据线87us以上 */
     /* 通过读取数据总线（SDA）的电平，判断从机是否有低电平响应信号 如不响应则跳出，响应则向下运行*/
     if(DHT11_DATA_IN()== Bit_RESET)
@@ -1525,5 +1518,12 @@ OLED任务中实现了巧妙的二级菜单及切换逻辑。用一个`uint8_t m
 
 1. ​`menu_show_flag`​或`content_show_flag`​被设置后会触发OLED的重绘：`OLED_DrawBitMap()、OLED_ShowChinese_F16X16()`​等，绘制内容和当前`menu`有关；
 2. 对温湿度数据采用`sprintf()`​格式化显示；写缓冲使用`OLED_WriteBuffer()`清空行数据。
+
+## 修订记录
+
+|序号|修订时间|修订概要|
+| :----: | :----------: | :--------: |
+|1|2025-12-12|首次提交|
+|2|2025-12-14|通篇校正|
 
 ‍
